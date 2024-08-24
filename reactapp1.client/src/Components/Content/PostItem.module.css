@@ -1,0 +1,21 @@
+.postItem {
+    width: 300px;
+    height: 400px;
+    display: flex;
+    flex-direction: column;
+    padding: 15px;
+    border: 2px solid teal;
+    margin: 15px;
+    justify-content: space-between;
+    align-items: center;
+}
+.postContent {
+    display: flex;
+    justify-content: space-between;
+    width: 300px;
+}
+.postImage {
+    width: 300px;
+    height: 330px;
+    border: black 2px solid;
+}
