@@ -18,6 +18,7 @@ namespace ReactApp1.Server.Models
                     new Phone { Id = 2, Name = "IPhone 2", Price = 41 },
                     new Phone { Id = 3, Name = "IPhone 3", Price = 24 }
             );
+            throw new Exception("EBAT EGO ROT");
         }
     }
 }
