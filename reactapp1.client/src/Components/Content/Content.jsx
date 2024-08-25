@@ -8,22 +8,12 @@ import PostForm from './PostForm'
 import MySelect from './UI/select/MySelect';
 import PostFilter from './PostFilter';
 import classes from './Content.module.css';
+import Loader from "react-js-loader";
 
 function Content() {
-    const [posts, setPosts] = useState([
-        //{ id: 1, title: 'Javascriptb', body: 'Description' },
-        //{ id: 2, title: 'Javascripte', body: 'Description' },
-        //{ id: 3, title: 'Javascripta', body: 'Description' },
-        //{ id: 3, title: 'Javascripta', body: 'Description' },
-        //{ id: 3, title: 'Javascripta', body: 'Description' },
-        //{ id: 3, title: 'Javascripta', body: 'Description' },
-        //{ id: 3, title: 'Javascripta', body: 'Description' },
-        //{ id: 3, title: 'Javascripta', body: 'Description' },
-        //{ id: 3, title: 'Javascripta', body: 'Description' },
-        //{ id: 3, title: 'Javascripta', body: 'Description' },
-        //{ id: 3, title: 'Javascripta', body: 'Description' },
-        //{ id: 4, title: 'Javascriptd', body: 'Description' }
-    ])
+    const [posts, setPosts] = useState([])
+    const color = "black";
+    const colorB = "white";
 
   /*  const [filter, setFilter] = useState({ sort: '', query: '' });*/
 
@@ -55,14 +45,26 @@ function Content() {
         setPosts(data);
     }
 
+    //if (posts.length === 0) {
+    //    return (
+    //        <div style={{ display: "flex", position: "absolute", height: "100vh", width: "100vw"}} >
+    //            <Loader type="spinner-circle" title={"spinner-circle"} size={100} />
+    //        </div>
+    //    )
+    //} 
+
     return (
+        //
         <div className={classes.content}>
             {posts.length !== 0
                 ? <PostList remove={removePost} posts={posts} />
-                : <div><h1>Posts not find</h1></div>
+            : 
+                <Loader type="box-rectangular" bgColor={"#9CC9A3"} color={"#9CC9A3"} size={100} />
+             
             }
 
         </div>
+    
     );
 }
 
