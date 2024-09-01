@@ -8,7 +8,7 @@ namespace ReactApp1.Server.Models
         public DbSet<PhoneCPU> CPUs { get; set; } = null!;
         public ApplicationContextDb(DbContextOptions options) : base(options)
         {
-           
+            Database.EnsureDeleted();
             Database.EnsureCreated();
         }
 
