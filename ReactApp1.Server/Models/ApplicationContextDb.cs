@@ -5,7 +5,7 @@ namespace ReactApp1.Server.Models
     public class ApplicationContextDb : DbContext
     {
         public DbSet<Phone> Phones { get; set; } = null!;
-        public DbSet<PhoneCPU> CPUs { get; set; } = null!;
+        public DbSet<PhoneCPU> PhoneCPUs { get; set; } = null!;
         public ApplicationContextDb(DbContextOptions options) : base(options)
         {
             Database.EnsureDeleted();
