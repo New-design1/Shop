@@ -4,6 +4,7 @@ import App from './App.jsx'
 import './index.css'
 import CustomHeader from './CustomHeader.jsx';
 import { createRoot } from 'react-dom/client';
+import Login from './Components/Administration/Login.jsx'
 import {
     createBrowserRouter,
     RouterProvider,
@@ -23,7 +24,11 @@ const router = createBrowserRouter([
     },
     {
         path: 'admin',
-        element: <div>About</div>,
+        element: (
+            <div>
+                <Login />
+            </div>
+        ),
     },
 ]);
 

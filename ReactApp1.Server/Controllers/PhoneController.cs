@@ -13,9 +13,9 @@ namespace ReactApp1.Server.Controllers
     [Route("[controller]/[action]")]
     public class PhoneController : Controller
     {
-        private readonly ApplicationContextDb _context;
+        private readonly ApplicationDbContext _context;
 
-        public PhoneController(ApplicationContextDb context)
+        public PhoneController(ApplicationDbContext context)
         {
             _context = context;
         }

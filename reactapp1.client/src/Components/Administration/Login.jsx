@@ -1,8 +1,17 @@
 import React from 'react'
+import Panel from './Panel.jsx'
+
+
+let isAuthorized = false;
 
 const Login = () => {
     return (
-    <div>Login</div>
+        isAuthorized === false ?
+            <div>
+                Login
+            </div> 
+            :
+            <Panel />
     )
 }
 

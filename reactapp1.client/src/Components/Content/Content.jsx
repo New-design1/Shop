@@ -12,8 +12,6 @@ import Loader from "react-js-loader";
 
 function Content() {
     const [posts, setPosts] = useState([])
-    const color = "black";
-    const colorB = "white";
 
   /*  const [filter, setFilter] = useState({ sort: '', query: '' });*/
 
@@ -59,10 +57,8 @@ function Content() {
             {posts.length !== 0
                 ? <PostList remove={removePost} posts={posts} />
             : 
-                <Loader type="box-rectangular" bgColor={"#9CC9A3"} color={"#9CC9A3"} size={100} />
-             
+                <Loader type="box-rectangular" bgColor={"#9CC9A3"} color={"#9CC9A3"} size={100} />   
             }
-
         </div>
     
     );
