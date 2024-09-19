@@ -9,7 +9,7 @@ namespace ReactApp1.Server.Models
         public DbSet<Phone> Phones { get; set; } = null!;
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
-           // Database.EnsureDeleted();
+            Database.EnsureDeleted();
             Database.EnsureCreated();
         }
 
@@ -27,7 +27,8 @@ namespace ReactApp1.Server.Models
             modelBuilder.Entity<IdentityUser>().HasData(new IdentityUser
             {
                 Id = "3b62472e-4f66-49fa-a20f-e7685b9565d8",
-                UserName = "admin",
+                Email = "admin@test.com",
+                UserName = "admin@test.com",
                 NormalizedUserName = "ADMIN",
                 PasswordHash = new PasswordHasher<IdentityUser>().HashPassword(null, "superpassword"),
                 SecurityStamp = string.Empty

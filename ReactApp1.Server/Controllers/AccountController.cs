@@ -1,10 +1,12 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using NuGet.Protocol;
 
 namespace ReactApp1.Server.Controllers
 {
     [Authorize]
+    [Route("[controller]/[action]")]
     public class AccountController : Controller
     {
         private readonly UserManager<IdentityUser> userManager;
@@ -17,31 +19,37 @@ namespace ReactApp1.Server.Controllers
 
         [HttpPost]
         [AllowAnonymous]
-        public async Task<IActionResult> Login(Models.UserModel model, string returnUrl)
+        public async Task<IActionResult> Login([FromBody] Models.UserModel model)
         {
-            if (ModelState.IsValid)
+            //Models.UserModel model = modelData.FromJson<Models.UserModel>();
+            //if (ModelState.IsValid)
+            //{
+            IdentityUser user = await userManager.FindByNameAsync(model.UserName);
+            if (user != null)
             {
-                IdentityUser user = await userManager.FindByNameAsync(model.UserName);
-                if (user != null)
-                {
-                    await signInManager.SignOutAsync();
-                    Microsoft.AspNetCore.Identity.SignInResult result = await signInManager.PasswordSignInAsync(user, model.Password, model.RememberMe, false);
-                    if (result.Succeeded)
-                    {
-                        return Redirect(returnUrl ?? "/");
-                    }
-                }
-                ModelState.AddModelError(nameof(Models.UserModel.UserName), "Неверный логин или пароль");
+                //await signInManager.SignOutAsync();
+                await signInManager.SignInAsync(user, false);
+                //Microsoft.AspNetCore.Identity.SignInResult result = await signInManager.PasswordSignInAsync(user, model.Password, model.RememberMe, false);
+                ////if (result.Succeeded)
+                //    {
+                //        return Redirect("https://localhost:5173/admin");
+                //    }
+                //return Redirect("https://localhost:5173/admin");
             }
-            ViewBag.returnUrl = returnUrl;
-            return View(model);
+            //  ModelState.AddModelError(nameof(Models.UserModel.UserName), "Неверный логин или пароль");
+            //}
+            //return View(model);
+            return new EmptyResult();
         }
 
+        [HttpGet]
         [Authorize]
         public async Task<IActionResult> Logout()
         {
             await signInManager.SignOutAsync();
             return RedirectToAction("Index", "Home");
         }
+
+
     }
 }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -168,6 +169,7 @@ namespace ReactApp1.Server.Controllers
 
         //[HttpGet(Name = "GetAllPhones")]
         [HttpGet]
+        [Authorize]
         public async Task<ActionResult<IEnumerable<Phone>>> GetAllPhones()
         {
             try
