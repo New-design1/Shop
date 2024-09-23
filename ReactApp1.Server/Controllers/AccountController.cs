@@ -1,7 +1,12 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 using NuGet.Protocol;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
 
 namespace ReactApp1.Server.Controllers
 {
@@ -21,25 +26,28 @@ namespace ReactApp1.Server.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Login([FromBody] Models.UserModel model)
         {
-            //Models.UserModel model = modelData.FromJson<Models.UserModel>();
-            //if (ModelState.IsValid)
-            //{
+            if (model == null)
+                return BadRequest();
+
             IdentityUser user = await userManager.FindByNameAsync(model.UserName);
-            if (user != null)
-            {
-                //await signInManager.SignOutAsync();
-                await signInManager.SignInAsync(user, false);
-                //Microsoft.AspNetCore.Identity.SignInResult result = await signInManager.PasswordSignInAsync(user, model.Password, model.RememberMe, false);
-                ////if (result.Succeeded)
-                //    {
-                //        return Redirect("https://localhost:5173/admin");
-                //    }
-                //return Redirect("https://localhost:5173/admin");
-            }
-            //  ModelState.AddModelError(nameof(Models.UserModel.UserName), "Неверный логин или пароль");
-            //}
-            //return View(model);
-            return new EmptyResult();
+            if (user == null)
+                return Unauthorized();
+
+            var isValidPassword = await userManager.CheckPasswordAsync(user, model.Password);
+            if (!isValidPassword)
+                return Unauthorized();
+
+            var claims = new List<Claim> {new Claim("name", model.UserName)};
+
+            var jwt = new JwtSecurityToken(
+                issuer: "MyAuthServer",
+                audience: "MyAuthClient",
+                claims: claims,
+                expires: DateTime.UtcNow.Add(TimeSpan.FromMinutes(2)),
+                signingCredentials: new Microsoft.IdentityModel.Tokens.SigningCredentials(
+                new SymmetricSecurityKey(Encoding.UTF8.GetBytes("mysupersecret_secretsecretsecretkey!123")), SecurityAlgorithms.HmacSha256));
+            
+            return  Ok(new JwtSecurityTokenHandler().WriteToken(jwt));
         }
 
         [HttpGet]

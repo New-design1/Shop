@@ -1,39 +1,49 @@
-import React from 'react'
+import { useRef }  from 'react'
 import Panel from './Panel.jsx'
 
+function Login()
+{
+    const inputUserName = useRef();
+    const inputUserPassword = useRef();
 
-let isAuthorized = false;
+    async function fetchLogin() {
+        
+        let user = {
+            UserName: inputUserName.current.value,
+            Password: inputUserPassword.current.value
+        };
 
-let user = {
-    UserName: 'admin',
-    Password: 'superpassword',
-    RememberMe: false
-};
+        const response = await fetch('https://localhost:7204/Account/Login', {
+            credentials: "include",
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            },
+            body: JSON.stringify(user)
+        });
 
+        if (response.ok) {
+            let token = await response.text();
+            sessionStorage.setItem('token', token);
+            location.reload();
+        }
+    }
 
-const Login = () => {
     return (
-        isAuthorized === false ?
+        sessionStorage.getItem('token') === null ?
             <div>
                 Login
-                <input value="ֽאזלט לוםÿ" onClick={fetchPosts} type="button" />
+                <form>
+                    <input ref={inputUserName} type="text" name="UserName"  />
+                    <input ref={inputUserPassword} type="text" name="Password" />
+                    <input type="button" onClick={fetchLogin} value="Login" />
+                </form>
             </div> 
             :
             <Panel />
     )
+
 }
 
-async function fetchPosts() {
-    const response = await fetch('https://localhost:7204/Account/Login', {
-        credentials: "include",
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json;charset=utf-8'
-        },
-        body: JSON.stringify(user)
-    });
-    if (response.ok)
-        isAuthorized = true;
-}
 
 export default Login;

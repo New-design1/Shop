@@ -37,7 +37,7 @@ function Content() {
     useEffect(() => { fetchPosts() }, [])
 
     async function fetchPosts() {
-        const response = await fetch('https://localhost:7204/Phone/GetAllPhones', { credentials: "include"});
+        const response = await fetch('https://localhost:7204/Phone/GetAllPhones');
         console.log('fetch worked');
         const data = await response.json();
         setPosts(data);

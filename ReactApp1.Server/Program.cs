@@ -2,39 +2,49 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using ReactApp1.Server.Models;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authentication.OAuth;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using Microsoft.AspNetCore.Authorization;
 
 var builder = WebApplication.CreateBuilder(args);
 
-//builder.Services.AddAuthentication(options =>
-//{
-//    options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-//}).AddCookie(options =>
-//{
-//    options.ExpireTimeSpan = TimeSpan.FromMinutes(30);
-//    options.Cookie.MaxAge = options.ExpireTimeSpan; // optional
-//    options.SlidingExpiration = true;
-//    options.Cookie.Path = "/login";
-//   
-//});
-builder.Services.AddAuthorization();
+builder.Services.AddAuthorization(o => o.DefaultPolicy = 
+    new AuthorizationPolicyBuilder(JwtBearerDefaults.AuthenticationScheme).RequireAuthenticatedUser().Build());
+
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidIssuer = "MyAuthServer",
+            ValidateAudience = true,
+            ValidAudience = "MyAuthClient",
+            ValidateLifetime = true,
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("mysupersecret_secretsecretsecretkey!123")),
+            ValidateIssuerSigningKey = true
+        };
+    });
 
 // Add services to the container.
 string connection = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseNpgsql(connection));
 
 builder.Services.AddIdentity<IdentityUser, IdentityRole>()
-    .AddEntityFrameworkStores<ApplicationDbContext>();
+    .AddEntityFrameworkStores<ApplicationDbContext>()
+    .AddDefaultTokenProviders();
 
-builder.Services.ConfigureApplicationCookie(options =>
-{
-    options.Cookie.Name = "WebSiteAuth";
-    options.ExpireTimeSpan = TimeSpan.FromDays(1);
-    options.Cookie.MaxAge = TimeSpan.FromDays(1);
-    options.Cookie.HttpOnly = true;
-    options.LoginPath = "/";
-    options.SlidingExpiration = true;
-    options.Cookie.SameSite = SameSiteMode.None;
-});
+//builder.Services.ConfigureApplicationCookie(options =>
+//{
+//    options.Cookie.Name = "WebSiteAuth";
+//    options.ExpireTimeSpan = TimeSpan.FromDays(1);
+//    options.Cookie.MaxAge = TimeSpan.FromDays(1);
+//    options.Cookie.HttpOnly = true;
+//    options.LoginPath = "/";
+//    options.SlidingExpiration = true;
+//});
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -53,6 +63,8 @@ var app = builder.Build();
 //    context.Database.EnsureCreated();
 //    // DbInitializer.Initialize(context);
 //}
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.UseDefaultFiles();
 app.UseStaticFiles();
@@ -72,8 +84,6 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.UseAuthentication();
-app.UseAuthorization();
 
 //app.MapIdentityApi<IdentityUser>();
 app.MapControllers();
