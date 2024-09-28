@@ -2,6 +2,7 @@ import React from 'react'
 import PostItem from './PostItem'
 import classes from './PostList.module.css'
 
+
 const PostList = ({ posts, remove }) => {
     return (
         <div className={classes.postlist }>

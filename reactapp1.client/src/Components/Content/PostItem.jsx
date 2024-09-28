@@ -1,12 +1,15 @@
 import React from 'react';
 import MyButton from './UI/button/MyButton';
 import classes from './PostItem.module.css'
+import ItemImage from './ItemImage'
 
 const PostItem = (props) => {
 
     return (
         <div className={classes.postItem}>
-            <div className={classes.postImage}></div>
+            
+                <ItemImage images = {props.post.images} />
+            
             <div>
                 <div className={classes.postContent}>
                     <strong>{props.number}. {props.post.name}</strong>
@@ -14,7 +17,7 @@ const PostItem = (props) => {
                         {props.post.price}
                     </div>
                 </div>
-                <div className="post__btns">
+                <div>
                     <MyButton onClick={() => props.remove(props.post)}>Buy</MyButton>
                 </div>
             </div>

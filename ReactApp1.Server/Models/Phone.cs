@@ -11,6 +11,9 @@ namespace ReactApp1.Server.Models
         public string? Name { get; set; }
 
         [BindProperty]
-        public int Price { get; set; }
+        public string Price { get; set; }
+
+        [BindProperty]
+        public List<string> Images { get; set; }
     }
 }

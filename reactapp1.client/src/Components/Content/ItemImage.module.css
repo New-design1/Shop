@@ -1,0 +1,20 @@
+.ItemImage {
+    object-fit: contain;
+    width: 294px;
+    height: 325px;
+}
+
+.image {
+    width: 300px;
+    height: 330px;
+    background-image: url("../../../src/Images/M3-Black-Back.png");
+    background-size: contain;
+    background-repeat: no-repeat;
+    display: flex;
+    flex-direction: row;
+}
+
+.splitter {
+    height: 332px;
+    width: 75px;
+}
