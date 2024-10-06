@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Mvc;
 
 namespace ReactApp1.Server.Models
 {
@@ -6,6 +7,8 @@ namespace ReactApp1.Server.Models
     {
         [Key]
         public int Id { get; set; }
+
+        [BindProperty]
         public string? Name { get; set; }
     }
 }
