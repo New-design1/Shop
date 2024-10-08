@@ -51,6 +51,8 @@ namespace ReactApp1.Server.Models
                     new Phone { Id = 2, Name = "IPhone 2", Price = 41, Manufacturer = "Apple", PhoneCPUId = 2 },
                     new Phone { Id = 3, Name = "IPhone 3", Price = 24, Manufacturer = "Apple", PhoneCPUId = 1 }
             );
+
+            modelBuilder.Entity<Phone>().Navigation(x => x.PhoneCPU).AutoInclude();
         }
     }
 }

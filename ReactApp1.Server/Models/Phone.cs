@@ -8,7 +8,7 @@ namespace ReactApp1.Server.Models
     {
         public int PhoneCPUId { get; set; }
 
-        public PhoneCPU? PhoneCPU { get; set; }
+        public virtual PhoneCPU? PhoneCPU { get; set; }
 
         [BindProperty]
         public int Price { get; set; }

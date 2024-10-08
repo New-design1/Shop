@@ -52,9 +52,9 @@ namespace ReactApp1.Server.Repositories
             set.Remove(entity);
         }
 
-        public virtual async void SaveAsync()
+        public virtual async Task<int> SaveAsync()
         {
-            await context.SaveChangesAsync();
+            return await context.SaveChangesAsync();
         }
     }
 }
