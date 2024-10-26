@@ -10,7 +10,7 @@ import PostFilter from './PostFilter';
 import classes from './Content.module.css';
 import Loader from "react-js-loader";
 
-function Content() {
+const Content = (props) => {
     const [posts, setPosts] = useState([])
 
   /*  const [filter, setFilter] = useState({ sort: '', query: '' });*/
@@ -29,7 +29,7 @@ function Content() {
     const createPost = (newPost) => {
         setPosts([...posts, newPost])
     }
-
+    
     const removePost = (post) => {
         setPosts(posts.filter(p => p.id !== post.id))
     }
@@ -52,10 +52,9 @@ function Content() {
     //} 
 
     return (
-        //
         <div className={classes.content}>
             {posts.length !== 0
-                ? <PostList remove={removePost} posts={posts} />
+                ? <PostList addToCart={props.addToCart} posts={posts} />
             : 
                 <Loader type="box-rectangular" bgColor={"#9CC9A3"} color={"#9CC9A3"} size={100} />   
             }

@@ -3,4 +3,72 @@
     height: auto;
     border-bottom: 2px solid #464646;
     margin-bottom: 50px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    position: relative;
+    background-color: #e3e3e3;
+}
+
+.Cart,
+.CartOpen {
+    position: relative;
+    background-color: transparent;
+    top: 21px;
+    font-size: 19px;
+    height: 38px;
+    padding: 0px 23px;
+}
+
+.Cart:hover,
+.CartOpen:hover {
+    animation-name: example;
+
+}
+
+.Cart::before,
+.CartOpen::before {
+    font-family: 'Material Icons';
+    content: '\e8cc';
+    right: 100px;
+    position: absolute;
+    padding-top: 5px;
+}
+
+.Cart::after {
+    font-family: 'Material Icons';
+    font-size: 26px;
+    content: '\e313';
+    position: absolute;
+    padding-top: 3px;
+}
+
+.CartOpen::after {
+    font-family: 'Material Icons';
+    font-size: 26px;
+    content: '\e316';
+    position: absolute;
+    padding-top: 3px;
+}
+
+.CartIcon {
+
+}
+
+.CartOpenArea {
+    position: absolute;
+    top: 60px;
+    right: 0px;
+    width: 400px;
+    background-color: #f2f2f2;
+}
+
+@keyframes example {
+    from {
+        padding-top: 3px;
+    }
+
+    to {
+        padding-top: 10px;
+    }
 }

@@ -10,7 +10,7 @@ namespace ReactApp1.Server
         public DbSet<Phone> Phones { get; set; } = null!;
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
-            Database.EnsureDeleted();
+            //Database.EnsureDeleted();
             Database.EnsureCreated();
         }
 
@@ -46,7 +46,7 @@ namespace ReactApp1.Server
                     {
                         Id = 1,
                         Name = "Phone 1",
-                        Price = "30 000 P",
+                        Price = "30 000",
                         Images = new List<string>()
                         {
                             "M3-Black-Back.png",
@@ -60,7 +60,7 @@ namespace ReactApp1.Server
                     {
                         Id = 2,
                         Name = "Phone 2",
-                        Price = "17 880 P",
+                        Price = "17 880",
                         Images = new List<string>()
                         {
                             "1.jpg",
@@ -74,7 +74,7 @@ namespace ReactApp1.Server
                     {
                         Id = 3,
                         Name = "Phone 3",
-                        Price = "37 999 P",
+                        Price = "37 999",
                         Images = new List<string>()
                         {
                             "z1_2.jpg",

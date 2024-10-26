@@ -1,0 +1,21 @@
+.CartItem {
+    padding: 20px 27px;
+    margin: 13px 10px;
+    height: 75px;
+    border: 2px solid teal;
+    border-radius: 15px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.CartItem img {
+    width: 70px;
+    height: 70px;
+    border-radius: 5px;
+    float: left;
+}
+
+.Trash {
+    position: relative;
+    top: 17px;
+}

@@ -1,13 +1,28 @@
 import './App.css';
 import Side from './Components/Side/Side';
 import Content from './Components/Content/Content'
+import CustomHeader from './CustomHeader.jsx';
+import { useState } from 'react'
+
 
 function App() {
-    
+
+    const [cartItems, setCartItems] = useState([])
+
+    const addItemsToCart = (item) => {
+        let existItem = cartItems.find(i => i.id == item.id)
+        if (existItem === undefined)
+            setCartItems([...cartItems, item])
+        console.log("Item added")
+    }
+
     return (
-        <div className="App">
-            <Side/>
-            <Content/>
+        <div>
+            <CustomHeader cartItems={cartItems} />
+            <div className="App">
+                <Side />
+                <Content addToCart={addItemsToCart} />
+            </div>
         </div>
     );
     /*const [forecasts, setForecasts] = useState();

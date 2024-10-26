@@ -14,11 +14,11 @@ namespace ReactApp1.Server.Controllers
     [Route("[controller]/[action]")]
     public class PhoneController : Controller
     {
-        private readonly ApplicationDbContext _bdContext;
+        private readonly ApplicationDbContext _dbContext;
 
         public PhoneController(ApplicationDbContext context)
         {
-            _bdContext = context;
+            _dbContext = context;
         }
 
         [HttpGet]
@@ -37,7 +37,7 @@ namespace ReactApp1.Server.Controllers
         [HttpGet]
         public async Task<ActionResult<Phone>> GetPhone()
         {
-            var phone = await _bdContext.Phones.FirstOrDefaultAsync();
+            var phone = await _dbContext.Phones.FirstOrDefaultAsync();
 
             return phone;
         }
@@ -47,7 +47,7 @@ namespace ReactApp1.Server.Controllers
         {
             try
             {
-                var phones = await _bdContext.Phones.ToListAsync();
+                var phones = await _dbContext.Phones.ToListAsync();
                 return Ok(phones); // Возвращаем 200 OK с данными
             }
             catch (Exception ex)
@@ -63,8 +63,8 @@ namespace ReactApp1.Server.Controllers
         {
             if (ModelState.IsValid)
             {
-                _bdContext.Phones.Add(phone);
-                await _bdContext.SaveChangesAsync();
+                _dbContext.Phones.Add(phone);
+                await _dbContext.SaveChangesAsync();
                 return Ok();
             }
             return BadRequest();

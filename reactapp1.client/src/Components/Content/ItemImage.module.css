@@ -7,7 +7,6 @@
 .image {
     width: 300px;
     height: 330px;
-    background-image: url("../../../src/Images/M3-Black-Back.png");
     background-size: contain;
     background-repeat: no-repeat;
     display: flex;

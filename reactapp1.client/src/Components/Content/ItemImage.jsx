@@ -2,7 +2,6 @@
 import classes from './ItemImage.module.css';
 
 const ItemImage = (props) => {
-    const itemDivWidth = 304
     const pathToImagesFolder = "../../../src/Images/";
     const [image, setImage] = useState(`url(${pathToImagesFolder + props.images[0]})`)
 
