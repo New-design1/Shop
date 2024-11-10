@@ -9,29 +9,17 @@ import MySelect from './UI/select/MySelect';
 import PostFilter from './PostFilter';
 import classes from './Content.module.css';
 import Loader from "react-js-loader";
+import ItemCard from './ItemCard';
 
 const Content = (props) => {
-    const [posts, setPosts] = useState([])
-
-  /*  const [filter, setFilter] = useState({ sort: '', query: '' });*/
-
-    //const sortedPosts = useMemo(() => {
-    //    if (filter.sort) {
-    //        return [...posts].sort((a, b) => a[filter.sort].localeCompare(b[filter.sort]))
-    //    }
-    //    return posts;
-    //}, [filter.sort, posts])
-
-    //const sortedAndSearchedPosts = useMemo(() => {
-    //    return sortedPosts.filter(post => post.title.toLowerCase().includes(filter.query.toLowerCase()))
-    //}, [filter.query, sortedPosts])
+    const [items, setItems] = useState([])
 
     const createPost = (newPost) => {
-        setPosts([...posts, newPost])
+        setItems([...items, newPost])
     }
     
     const removePost = (post) => {
-        setPosts(posts.filter(p => p.id !== post.id))
+        setItems(items.filter(p => p.id !== post.id))
     }
 
     useEffect(() => { fetchPosts() }, [])
@@ -40,23 +28,19 @@ const Content = (props) => {
         const response = await fetch('https://localhost:7204/Phone/GetAllPhones');
         console.log('fetch worked');
         const data = await response.json();
-        setPosts(data);
+        setItems(data);
     }
 
-    //if (posts.length === 0) {
-    //    return (
-    //        <div style={{ display: "flex", position: "absolute", height: "100vh", width: "100vw"}} >
-    //            <Loader type="spinner-circle" title={"spinner-circle"} size={100} />
-    //        </div>
-    //    )
-    //} 
-
     return (
-        <div className={classes.content}>
-            {posts.length !== 0
-                ? <PostList addToCart={props.addToCart} posts={posts} />
+        <div className={classes.Content}>
+            {items.length !== 0
+            ?   (
+                    items.map((item) =>
+                        <ItemCard addToCart={props.addToCart} item={item} key={item.id } />
+                    )
+                )
             : 
-                <Loader type="box-rectangular" bgColor={"#9CC9A3"} color={"#9CC9A3"} size={100} />   
+                <span style={{ margin: "auto" }}> <Loader type="box-rectangular" bgColor={"#212529"} color={"#212529"} size={100} />  </span> 
             }
         </div>
     

@@ -26,14 +26,14 @@
 
 }
 
-.Cart::before,
-.CartOpen::before {
-    font-family: 'Material Icons';
-    content: '\e8cc';
-    right: 100px;
-    position: absolute;
-    padding-top: 5px;
-}
+    .Cart::before,
+    .CartOpen::before {
+        font-family: 'Material Icons';
+        content: '\e8cc';
+        right: 100px;
+        position: absolute;
+        padding-top: 5px;
+    }
 
 .Cart::after {
     font-family: 'Material Icons';

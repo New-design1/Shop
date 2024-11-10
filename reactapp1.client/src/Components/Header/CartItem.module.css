@@ -1,0 +1,44 @@
+.CartItem {
+    padding: 20px 27px;
+    margin: 13px 10px;
+    height: 75px;
+    border: 2px solid teal;
+    border-radius: 15px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.CartImg {
+    position:relative;
+    top:8px;
+    margin-left: 5px;
+    width: 70px;
+    height: 70px;
+}
+
+.Trash {
+    position: relative;
+    top: 27px;
+    margin-right: 15px;
+    cursor: pointer;
+    transition: transform 500ms ease;
+}
+
+.Trash:hover {
+    transform: scale(1.2);
+}
+
+.CartText {
+    text-align: center;
+}
+
+.CartItemName {
+    overflow: hidden;
+    max-width: 160px;
+    height: 25px;
+}
+
+.Price {
+    position: relative;
+    top: 3px;
+}

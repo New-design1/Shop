@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import classes from './CustomHeader.module.css';
-import CartItem from './Components/Content/CartItem';
+import CartItem from './Components/Header/CartItem';
 
 
 const CustomHeader = (props) => {

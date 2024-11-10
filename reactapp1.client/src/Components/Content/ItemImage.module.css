@@ -1,9 +1,3 @@
-.ItemImage {
-    object-fit: contain;
-    width: 294px;
-    height: 325px;
-}
-
 .image {
     width: 300px;
     height: 330px;
@@ -11,6 +5,8 @@
     background-repeat: no-repeat;
     display: flex;
     flex-direction: row;
+    position: relative;
+    top: 6px;
 }
 
 .splitter {

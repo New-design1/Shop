@@ -83,6 +83,20 @@ namespace ReactApp1.Server
                             "z8_1.jpg",
                             "z9_1.jpg"
                         }
+                    },
+                    new Phone
+                    {
+                        Id = 4,
+                        Name = "Phone 4",
+                        Price = "28 999",
+                        Images = new List<string>()
+                        {
+                            "z1_2.jpg",
+                            "z2_2.jpg",
+                            "z4_1.jpg",
+                            "z8_1.jpg",
+                            "z9_1.jpg"
+                        }
                     }
             );
         }

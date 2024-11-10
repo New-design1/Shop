@@ -9,6 +9,13 @@
     <BuildOutputFolder>$(MSBuildProjectDirectory)\dist</BuildOutputFolder>
   </PropertyGroup>
   <ItemGroup>
+    <None Remove="src\Components\Content\Counter.jsx" />
+    <None Remove="src\Components\Content\PostItem.jsx" />
+    <None Remove="src\Components\Content\PostItem.module.css" />
+    <None Remove="src\Components\Content\PostList.jsx" />
+    <None Remove="src\Components\Content\PostList.module.css" />
+  </ItemGroup>
+  <ItemGroup>
     <Folder Include="src\Components\Content\UI\header\" />
     <Folder Include="src\Components\Administration\" />
   </ItemGroup>
