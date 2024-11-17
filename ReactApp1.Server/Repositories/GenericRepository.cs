@@ -4,7 +4,8 @@ using System.Linq.Expressions;
 
 namespace ReactApp1.Server.Repositories
 {
-    public class GenericRepository<TEntity> where TEntity : class
+    public class GenericRepository<TEntity> : IRepository<TEntity> 
+        where TEntity : class
     {
         internal ApplicationDbContext context;
         internal DbSet<TEntity> set;
@@ -55,6 +56,11 @@ namespace ReactApp1.Server.Repositories
         public virtual async Task<int> SaveAsync()
         {
             return await context.SaveChangesAsync();
+        }
+
+        public virtual IQueryable<TEntity> SortBy<TKey>(Expression<Func<TEntity, TKey>> order)
+        {
+            return set.OrderBy(order);
         }
     }
 }
