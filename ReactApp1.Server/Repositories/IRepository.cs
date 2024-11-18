@@ -10,6 +10,5 @@ namespace ReactApp1.Server.Repositories
         void Update(TEntity entity);
         void Delete(TEntity entity);
         Task<int> SaveAsync();
-        IQueryable<TEntity> SortBy<TKey>(Expression<Func<TEntity, TKey>> order);
     }
 }

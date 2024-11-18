@@ -57,10 +57,5 @@ namespace ReactApp1.Server.Repositories
         {
             return await context.SaveChangesAsync();
         }
-
-        public virtual IQueryable<TEntity> SortBy<TKey>(Expression<Func<TEntity, TKey>> order)
-        {
-            return set.OrderBy(order);
-        }
     }
 }

@@ -76,7 +76,7 @@ namespace ReactApp1.Server.Controllers
         {
             try
             {
-                var phones = await repository.SortBy(x => x.Manufacturer).ToListAsync();
+                var phones = await repository.GetAll().OrderBy(x => x.Manufacturer).ToListAsync();
                 return Ok(phones); // Возвращаем 200 OK с данными
             }
             catch (Exception ex)
