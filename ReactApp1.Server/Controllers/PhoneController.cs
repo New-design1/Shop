@@ -15,7 +15,7 @@ namespace ReactApp1.Server.Controllers
     [Route("[controller]/[action]")]
     public class PhoneController : Controller
     {
-        private readonly GenericRepository<Phone> repository;
+        private readonly IRepository<Phone> repository;
 
         public PhoneController(ApplicationDbContext context)
         {
@@ -69,6 +69,21 @@ namespace ReactApp1.Server.Controllers
                 return Ok();
             }
             return BadRequest();
+        }
+
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<Phone>>> SortByManufacturer()
+        {
+            try
+            {
+                var phones = await repository.GetAll().OrderBy(x => x.Manufacturer).ToListAsync();
+                return Ok(phones); // Возвращаем 200 OK с данными
+            }
+            catch (Exception ex)
+            {
+                // Логирование ошибки (если нужно)
+                return StatusCode(500, "Internal server error"); // Возвращаем 500 при ошибке
+            }
         }
     }
 }

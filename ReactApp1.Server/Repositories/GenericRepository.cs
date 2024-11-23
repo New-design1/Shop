@@ -4,7 +4,8 @@ using System.Linq.Expressions;
 
 namespace ReactApp1.Server.Repositories
 {
-    public class GenericRepository<TEntity> where TEntity : class
+    public class GenericRepository<TEntity> : IRepository<TEntity> 
+        where TEntity : class
     {
         internal ApplicationDbContext context;
         internal DbSet<TEntity> set;
