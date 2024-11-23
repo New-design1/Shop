@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ReactApp1.Server.Models;
+using ReactApp1.Server.Repositories;
 
 namespace ReactApp1.Server.Controllers
 {
@@ -14,11 +15,11 @@ namespace ReactApp1.Server.Controllers
     [Route("[controller]/[action]")]
     public class PhoneController : Controller
     {
-        private readonly ApplicationDbContext _dbContext;
+        private readonly IRepository<Phone> repository;
 
         public PhoneController(ApplicationDbContext context)
         {
-            _dbContext = context;
+            repository = new GenericRepository<Phone>(context);
         }
 
         [HttpGet]
@@ -37,7 +38,7 @@ namespace ReactApp1.Server.Controllers
         [HttpGet]
         public async Task<ActionResult<Phone>> GetPhone()
         {
-            var phone = await _dbContext.Phones.FirstOrDefaultAsync();
+            var phone = await repository.GetAll().FirstOrDefaultAsync();
 
             return phone;
         }
@@ -47,7 +48,7 @@ namespace ReactApp1.Server.Controllers
         {
             try
             {
-                var phones = await _dbContext.Phones.ToListAsync();
+                var phones = await repository.GetAll().ToListAsync();
                 return Ok(phones); // Возвращаем 200 OK с данными
             }
             catch (Exception ex)
@@ -63,11 +64,26 @@ namespace ReactApp1.Server.Controllers
         {
             if (ModelState.IsValid)
             {
-                _dbContext.Phones.Add(phone);
-                await _dbContext.SaveChangesAsync();
+                repository.Insert(phone);
+                await repository.SaveAsync();
                 return Ok();
             }
             return BadRequest();
+        }
+
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<Phone>>> SortByManufacturer()
+        {
+            try
+            {
+                var phones = await repository.GetAll().OrderBy(x => x.Manufacturer).ToListAsync();
+                return Ok(phones); // Возвращаем 200 OK с данными
+            }
+            catch (Exception ex)
+            {
+                // Логирование ошибки (если нужно)
+                return StatusCode(500, "Internal server error"); // Возвращаем 500 при ошибке
+            }
         }
     }
 }
