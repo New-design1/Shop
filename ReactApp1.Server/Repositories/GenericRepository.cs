@@ -33,7 +33,7 @@ namespace ReactApp1.Server.Repositories
             return await set.FindAsync(id);
         }
 
-        public virtual void Insert(TEntity entity)
+        public virtual void Create(TEntity entity)
         {
             set.Add(entity);
         }

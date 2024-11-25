@@ -26,7 +26,7 @@ namespace ReactApp1.Server.Controllers
         [Authorize]
         public async Task<ActionResult> GetPhoneCharacteristics()
         {
-            var characteristics = new 
+            var characteristics = new
             {
                 Name = "Название",
                 Price = "Цена"
@@ -64,7 +64,7 @@ namespace ReactApp1.Server.Controllers
         {
             if (ModelState.IsValid)
             {
-                repository.Insert(phone);
+                repository.Create(phone);
                 await repository.SaveAsync();
                 return Ok();
             }
@@ -72,12 +72,31 @@ namespace ReactApp1.Server.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Phone>>> SortByManufacturer()
+        public async Task<ActionResult<IEnumerable<Phone>>> GetManufacturers()
         {
             try
             {
-                var phones = await repository.GetAll().OrderBy(x => x.Manufacturer).ToListAsync();
-                return Ok(phones); // Возвращаем 200 OK с данными
+                var manufacturers = await repository.GetAll().Select(p => p.Manufacturer).Distinct().ToListAsync();
+                return Ok(manufacturers); // Возвращаем 200 OK с данными
+            }
+            catch (Exception ex)
+            {
+                // Логирование ошибки (если нужно)
+                return StatusCode(500, "Internal server error"); // Возвращаем 500 при ошибке
+            }
+        }
+
+        [HttpPost]
+        public async Task<ActionResult<IEnumerable<Phone>>> FilterPhones([FromBody] string[] manufacturers)
+        {
+            try
+            {
+                if (manufacturers.Length == 0)
+                    return Ok(await repository.GetAll().ToListAsync());
+                else
+                {
+                    return Ok(await repository.GetAll(p => manufacturers.Contains(p.Manufacturer)).ToListAsync());
+                }
             }
             catch (Exception ex)
             {

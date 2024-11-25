@@ -2,7 +2,6 @@ import React, {useState} from 'react';
 import classes from './CustomHeader.module.css';
 import CartItem from './Components/Header/CartItem';
 
-
 const CustomHeader = (props) => {
     const [сartOpen, setСartOpen] = useState(false)
 

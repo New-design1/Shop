@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.AspNetCore.Authorization;
-using ReactApp1.Server;
+using ReactApp1.Server.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
