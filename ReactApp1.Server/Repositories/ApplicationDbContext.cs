@@ -7,11 +7,10 @@ namespace ReactApp1.Server.Repositories
 {
     public class ApplicationDbContext : IdentityDbContext<IdentityUser>
     {
-        public DbSet<PhoneCPU> PhoneCPUs { get; set; } = null!;
         public DbSet<Phone> Phones { get; set; } = null!;
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
-            //Database.EnsureDeleted();
+            Database.EnsureDeleted();
             Database.EnsureCreated();
         }
 
@@ -41,11 +40,6 @@ namespace ReactApp1.Server.Repositories
                 RoleId = "44546e06-8719-4ad8-b88a-f271ae9d6eab",
                 UserId = "3b62472e-4f66-49fa-a20f-e7685b9565d8"
             });
-
-            modelBuilder.Entity<PhoneCPU>().HasData(
-               new PhoneCPU { Id = 1, Cores = 6, Manufacturer = "Apple", Name = "Apple A13 Bionic" },
-               new PhoneCPU { Id = 2, Cores = 6, Manufacturer = "Apple", Name = "Apple A17 Pro" }
-           );
 
             modelBuilder.Entity<Phone>().HasData(
                     new Phone

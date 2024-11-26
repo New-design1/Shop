@@ -1,7 +1,5 @@
 ﻿import classes from './Side.module.css';
-import FormCheck from 'react-bootstrap/FormCheck';
 import Form from 'react-bootstrap/Form';
-import { useState, useRef } from 'react';
 
 const Side = (props) => {
 
