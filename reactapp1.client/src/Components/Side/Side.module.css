@@ -1,5 +1,7 @@
 .side {
-    flex:20%;
-    border: 1px solid teal;
-    height:200px;
+    flex: 15%;
+    height: max-content;
+    margin-right: 65px;
+    background-color: #F5F6F7;
+    text-align:left;
 }

@@ -9,7 +9,14 @@
     <BuildOutputFolder>$(MSBuildProjectDirectory)\dist</BuildOutputFolder>
   </PropertyGroup>
   <ItemGroup>
-    <Folder Include="src\Components\Content\UI\header\" />
-    <Folder Include="src\Components\Administration\" />
+    <None Remove="src\Components\Content\UI\**" />
+    <TypeScriptConfiguration Remove="src\Components\Content\UI\**" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="src\Components\Content\Counter.jsx" />
+    <None Remove="src\Components\Content\PostItem.jsx" />
+    <None Remove="src\Components\Content\PostItem.module.css" />
+    <None Remove="src\Components\Content\PostList.jsx" />
+    <None Remove="src\Components\Content\PostList.module.css" />
   </ItemGroup>
 </Project>

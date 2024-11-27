@@ -2,11 +2,12 @@ import React from 'react'
 import PostItem from './PostItem'
 import classes from './PostList.module.css'
 
-const PostList = ({ posts, remove }) => {
+
+const PostList = ({ addToCart, posts }) => {
     return (
         <div className={classes.postlist }>
             {posts.map((post, index) =>
-                <PostItem remove={remove} number={index + 1} post={post} key={post.id} />
+                <PostItem addToCart={addToCart} number={index + 1} post={post} key={post.id} />
             )}
         </div>
     );

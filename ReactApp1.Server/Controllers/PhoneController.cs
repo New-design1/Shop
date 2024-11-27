@@ -11,7 +11,6 @@ using ReactApp1.Server.Repositories;
 
 namespace ReactApp1.Server.Controllers
 {
-    //[ApiController]
     [Route("[controller]/[action]")]
     public class PhoneController : Controller
     {
@@ -26,7 +25,7 @@ namespace ReactApp1.Server.Controllers
         [Authorize]
         public async Task<ActionResult> GetPhoneCharacteristics()
         {
-            var characteristics = new 
+            var characteristics = new
             {
                 Name = "Название",
                 Price = "Цена"
@@ -60,29 +59,69 @@ namespace ReactApp1.Server.Controllers
 
         [HttpPost]
         [Authorize]
-        public async Task<IActionResult> Create([FromBody] Phone phone)
+        public async Task<IActionResult> Create([FromForm] IFormCollection form)
         {
-            if (ModelState.IsValid)
-            {
-                repository.Insert(phone);
-                await repository.SaveAsync();
-                return Ok();
-            }
-            return BadRequest();
-        }
-
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Phone>>> SortByManufacturer()
-        {
+            
             try
             {
-                var phones = await repository.GetAll().OrderBy(x => x.Manufacturer).ToListAsync();
-                return Ok(phones); // Возвращаем 200 OK с данными
+                var phone = new Phone();
+                phone.Name = form["name"];
+                phone.Price = form["price"];
+                phone.Manufacturer = form["manufacturer"];
+                phone.Images = new List<string>();
+                
+                foreach (var img in form.Files)
+                {
+                    var path = Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory()).FullName, "reactapp1.client", "src", "Images", img.FileName);
+                    
+                    using (var stream = new FileStream(path, FileMode.Create))
+                    {
+                        await img.CopyToAsync(stream);
+                    }
+
+                    phone.Images.Add(img.FileName);
+                }
+
+                repository.Create(phone);
+                await repository.SaveAsync();
+
+                return Ok();
             }
             catch (Exception ex)
             {
-                // Логирование ошибки (если нужно)
-                return StatusCode(500, "Internal server error"); // Возвращаем 500 при ошибке
+                return StatusCode(500, "Internal server error");
+            }
+        }
+
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<Phone>>> GetManufacturers()
+        {
+            try
+            {
+                var manufacturers = await repository.GetAll().Select(p => p.Manufacturer).Distinct().ToListAsync();
+                return Ok(manufacturers);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "Internal server error");
+            }
+        }
+
+        [HttpPost]
+        public async Task<ActionResult<IEnumerable<Phone>>> FilterPhones([FromBody] string[] manufacturers)
+        {
+            try
+            {
+                if (manufacturers.Length == 0)
+                    return Ok(await repository.GetAll().ToListAsync());
+                else
+                {
+                    return Ok(await repository.GetAll(p => manufacturers.Contains(p.Manufacturer)).ToListAsync());
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "Internal server error");
             }
         }
     }

@@ -6,11 +6,11 @@ namespace ReactApp1.Server.Models
 {
     public class Phone : EDevice
     {
-        public int PhoneCPUId { get; set; }
-
-        public virtual PhoneCPU? PhoneCPU { get; set; }
+        [BindProperty]
+        public string Price { get; set; }
 
         [BindProperty]
-        public int Price { get; set; }
+        public List<string> Images { get; set; }
+
     }
 }
