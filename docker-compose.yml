@@ -1,0 +1,8 @@
+version: '3.4'
+
+services:
+  reactapp1.server:
+    image: ${DOCKER_REGISTRY-}reactapp1server
+    build:
+      context: .
+      dockerfile: ReactApp1.Server/Dockerfile

@@ -10,7 +10,7 @@ namespace ReactApp1.Server.Repositories
         public DbSet<Phone> Phones { get; set; } = null!;
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
-            Database.EnsureDeleted();
+            //Database.EnsureDeleted();
             Database.EnsureCreated();
         }
 
