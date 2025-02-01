@@ -13,8 +13,8 @@ const baseFolder =
         : `${env.HOME}/.aspnet/https`;
 
 const certificateName = "reactapp1.client";
-const certFilePath = path.join(baseFolder, `${certificateName}.pem`);
-const keyFilePath = path.join(baseFolder, `${certificateName}.key`);
+const certFilePath = path.join("", `${certificateName}.pem`);
+const keyFilePath = path.join("", `${certificateName}.key`);
 
 //if (!fs.existsSync(certFilePath) || !fs.existsSync(keyFilePath)) {
 //    if (0 !== child_process.spawnSync('dotnet', [

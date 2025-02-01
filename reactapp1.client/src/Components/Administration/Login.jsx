@@ -16,7 +16,7 @@ function Login()
             Password: inputUserPassword.current.value
         };
 
-        const response = await fetch('https://localhost:7204/Account/Login', {
+        const response = await fetch('http://176.57.214.216/Account/Login', {
             credentials: "include",
             method: 'POST',
             headers: {
@@ -31,30 +31,19 @@ function Login()
             location.reload();
         }
     }
-            //<div>
-            //    Login
-            //    <form>
-            //        <input ref={inputUserName} type="text" name="UserName"  />
-            //        <input ref={inputUserPassword} type="text" name="Password" />
-            //        <input type="button" onClick={fetchLogin} value="Login" />
-            //    </form>
-            //</div> 
 
     return (
         sessionStorage.getItem('token') === null ?
             <Form className="position-absolute top-50 start-50 translate-middle border p-3">
                 <Form.Group className="mb-3 text-start" controlId="formBasicEmail">
                     <Form.Label>Пользователь</Form.Label>
-                    <Form.Control ref={inputUserName} type="email"  />
+                    <Form.Control ref={inputUserName} type="email" placeholder="admin" />
                 </Form.Group>
 
                 <Form.Group className="mb-3 text-start" controlId="formBasicPassword">
                         <Form.Label>Пароль</Form.Label>
-                    <Form.Control ref={inputUserPassword} type="password"  />
+                    <Form.Control ref={inputUserPassword} type="password" placeholder="123"/>
                     </Form.Group>
-                {/*<Form.Group className="mb-3 text-start" controlId="formBasicCheckbox">*/}
-                {/*        <Form.Check type="checkbox" label="Check me out" />*/}
-                    {/*</Form.Group>*/}
                 <Button variant="primary" type="button" onClick={fetchLogin}>
                         Войти
                     </Button>

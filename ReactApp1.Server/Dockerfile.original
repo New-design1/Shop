@@ -9,15 +9,13 @@ EXPOSE 8081
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY ["./reactapp1.client/nuget.config", "reactapp1.client/"]
-COPY ["./ReactApp1.Server/ReactApp1.Server.csproj", "ReactApp1.Server/"]
-COPY ["./reactapp1.client/reactapp1.client.esproj", "reactapp1.client/"]
+COPY ["reactapp1.client/nuget.config", "reactapp1.client/"]
+COPY ["ReactApp1.Server/ReactApp1.Server.csproj", "ReactApp1.Server/"]
+COPY ["reactapp1.client/reactapp1.client.esproj", "reactapp1.client/"]
 RUN dotnet restore "./ReactApp1.Server/ReactApp1.Server.csproj"
 COPY . .
 WORKDIR "/src/ReactApp1.Server"
-RUN apt update
-RUN apt install nodejs -y
-RUN apt install npm -y
+
 RUN dotnet build "./ReactApp1.Server.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 FROM build AS publish

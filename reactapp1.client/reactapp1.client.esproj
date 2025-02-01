@@ -8,4 +8,10 @@
     <!-- Folder where production build objects will be placed -->
     <BuildOutputFolder>$(MSBuildProjectDirectory)\dist</BuildOutputFolder>
   </PropertyGroup>
+  <ItemGroup>
+    <None Remove="public\images\код падает_20250129235824.jpg" />
+    <None Remove="public\images\код падает_20250130001249.jpg" />
+    <None Remove="public\images\код падает_20250130003334.jpg" />
+    <None Remove="public\images\код падает_20250130003350.jpg" />
+  </ItemGroup>
 </Project>
