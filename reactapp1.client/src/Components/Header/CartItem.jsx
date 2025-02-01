@@ -4,7 +4,7 @@ import { IconContext } from 'react-icons'
 import Card from 'react-bootstrap/Card';
 
 const CartItem = (props) => {
-    const pathToImagesFolder = "../../../src/Images/";
+    const pathToImagesFolder = "images/";
 
     return (
         <Card className="d-flex flex-row d-flex justify-content-between mb-3 h5">

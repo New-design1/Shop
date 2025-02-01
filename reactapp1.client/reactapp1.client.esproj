@@ -9,14 +9,9 @@
     <BuildOutputFolder>$(MSBuildProjectDirectory)\dist</BuildOutputFolder>
   </PropertyGroup>
   <ItemGroup>
-    <None Remove="src\Components\Content\UI\**" />
-    <TypeScriptConfiguration Remove="src\Components\Content\UI\**" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Remove="src\Components\Content\Counter.jsx" />
-    <None Remove="src\Components\Content\PostItem.jsx" />
-    <None Remove="src\Components\Content\PostItem.module.css" />
-    <None Remove="src\Components\Content\PostList.jsx" />
-    <None Remove="src\Components\Content\PostList.module.css" />
+    <None Remove="public\images\код падает_20250129235824.jpg" />
+    <None Remove="public\images\код падает_20250130001249.jpg" />
+    <None Remove="public\images\код падает_20250130003334.jpg" />
+    <None Remove="public\images\код падает_20250130003350.jpg" />
   </ItemGroup>
 </Project>

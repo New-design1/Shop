@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Xml.Linq;
+using Elfie.Serialization;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -21,25 +23,25 @@ namespace ReactApp1.Server.Controllers
             repository = new GenericRepository<Phone>(context);
         }
 
-        [HttpGet]
-        [Authorize]
-        public async Task<ActionResult> GetPhoneCharacteristics()
+        [HttpPost]
+        public async Task<ActionResult<Phone>> GetPhoneByName()
         {
-            var characteristics = new
+            try
             {
-                Name = "Название",
-                Price = "Цена"
-            };
-
-            return Json(characteristics);
-        }
-
-        [HttpGet]
-        public async Task<ActionResult<Phone>> GetPhone()
-        {
-            var phone = await repository.GetAll().FirstOrDefaultAsync();
-
-            return phone;
+                string name = "";
+                using (StreamReader stream = new StreamReader(HttpContext.Request.Body))
+                {
+                    name = await stream.ReadToEndAsync();
+                }
+                if (name == null || name.Length == 0)
+                    return BadRequest();
+                else
+                    return Ok(await repository.GetAll(p => p.Name == name).FirstOrDefaultAsync());
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "Internal server error");
+            }
         }
 
         [HttpGet]
@@ -48,12 +50,37 @@ namespace ReactApp1.Server.Controllers
             try
             {
                 var phones = await repository.GetAll().ToListAsync();
-                return Ok(phones); // Возвращаем 200 OK с данными
+                return Ok(phones); 
             }
             catch (Exception ex)
             {
-                // Логирование ошибки (если нужно)
-                return StatusCode(500, "Internal server error"); // Возвращаем 500 при ошибке
+                
+                return StatusCode(500, "Internal server error");
+            }
+        }
+
+        [HttpPost]
+        [Authorize]
+        public async Task<ActionResult<IEnumerable<string>>> SearchPhone()
+        {
+            try
+            {
+                string name = "";
+                using (StreamReader stream = new StreamReader(HttpContext.Request.Body))
+                {
+                    name = await stream.ReadToEndAsync();
+                }
+                if (name == null || name.Length == 0)
+                    return BadRequest();
+                else
+                    return Ok(await repository.GetAll(p => p.Name.ToLower().Contains(name.ToLower()))
+                                              .Select(p => p.Name)
+                                              .Take(5)
+                                              .ToListAsync());
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "Internal server error");
             }
         }
 
@@ -61,7 +88,6 @@ namespace ReactApp1.Server.Controllers
         [Authorize]
         public async Task<IActionResult> Create([FromForm] IFormCollection form)
         {
-            
             try
             {
                 var phone = new Phone();
@@ -69,17 +95,25 @@ namespace ReactApp1.Server.Controllers
                 phone.Price = form["price"];
                 phone.Manufacturer = form["manufacturer"];
                 phone.Images = new List<string>();
-                
+
                 foreach (var img in form.Files)
                 {
-                    var path = Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory()).FullName, "reactapp1.client", "src", "Images", img.FileName);
-                    
+                    string fileNameWithoutExtension = Path.GetFileNameWithoutExtension(img.FileName).Replace(" ","");
+                    string timestamp = DateTime.Now.ToString("yyyyMMddHHmmss");
+                    string fileExtension = Path.GetExtension(img.FileName);
+                    string uniqueFileName = $"{fileNameWithoutExtension}_{timestamp}{fileExtension}";
+                    //var path = Path.Combine(@"C:\Users\User1\source\repos\ReactApp1\reactapp1.client\public\images\", uniqueFileName);
+                    // Путь для compose-контейнера
+                    //var path = Path.Combine("/src/reactapp1.client/public/images", uniqueFileName);
+                    // Путь для прода
+                    var path = Path.Combine("/app/wwwroot/images", uniqueFileName);
+
                     using (var stream = new FileStream(path, FileMode.Create))
                     {
                         await img.CopyToAsync(stream);
                     }
 
-                    phone.Images.Add(img.FileName);
+                    phone.Images.Add(uniqueFileName);
                 }
 
                 repository.Create(phone);
@@ -89,7 +123,89 @@ namespace ReactApp1.Server.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(500, "Internal server error");
+                return StatusCode(500, $"{ex.Message}");
+            }
+        }
+
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> Update([FromForm] IFormCollection form)
+        {
+            try
+            {
+                var id = Convert.ToInt32(form["id"]);
+                var phone = repository.GetAll(p => p.Id == id).First();
+                phone.Name = form["name"];
+                phone.Price = form["price"];
+                phone.Manufacturer = form["manufacturer"];
+                
+                if (form.Files.Count != 0)
+                {     
+                    foreach (var img in phone.Images)
+                    {
+                        //var fullPath = Path.Combine(@"C:\Users\User1\source\repos\ReactApp1\reactapp1.client\public\images\", img);
+                        var fullPath = Path.Combine("/app/wwwroot/images", img);
+                        System.IO.File.Delete(fullPath);
+                    }
+
+                    phone.Images.Clear();
+
+                    foreach (var img in form.Files)
+                    {
+                        string fileNameWithoutExtension = Path.GetFileNameWithoutExtension(img.FileName).Replace(" ", "");
+                        string timestamp = DateTime.Now.ToString("yyyyMMddHHmmss");
+                        string fileExtension = Path.GetExtension(img.FileName);
+                        string uniqueFileName = $"{fileNameWithoutExtension}_{timestamp}{fileExtension}";
+                        //var path = Path.Combine(@"C:\Users\User1\source\repos\ReactApp1\reactapp1.client\public\images\", uniqueFileName);
+                        // Путь для compose-контейнера
+                        //var path = Path.Combine("/src/reactapp1.client/public/images", uniqueFileName);
+                        // Путь для прода
+                        var path = Path.Combine("/app/wwwroot/images", uniqueFileName);
+
+                        using (var stream = new FileStream(path, FileMode.Create))
+                        {
+                            await img.CopyToAsync(stream);
+                        }
+
+                        phone.Images.Add(uniqueFileName);
+                    }
+
+                }
+
+                repository.Update(phone);
+                await repository.SaveAsync();
+
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"{ex.Message}");
+            }
+        }
+
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> Delete([FromForm] IFormCollection form)
+        {
+            try
+            {
+                var id = Convert.ToInt32(form["id"]);
+                var phone = repository.GetAll(p => p.Id == id).First();
+                foreach (var img in phone.Images)
+                {
+                    //var fullPath = Path.Combine(@"C:\Users\User1\source\repos\ReactApp1\reactapp1.client\public\images\", img);
+                    var fullPath = Path.Combine("/app/wwwroot/images", img);
+                    System.IO.File.Delete(fullPath);
+                }
+
+                repository.Delete(phone);
+                await repository.SaveAsync();
+
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"{ex.Message}");
             }
         }
 

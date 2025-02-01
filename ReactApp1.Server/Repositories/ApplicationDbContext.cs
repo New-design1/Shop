@@ -10,7 +10,7 @@ namespace ReactApp1.Server.Repositories
         public DbSet<Phone> Phones { get; set; } = null!;
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
-            Database.EnsureDeleted();
+            //Database.EnsureDeleted();
             Database.EnsureCreated();
         }
 
@@ -60,7 +60,7 @@ namespace ReactApp1.Server.Repositories
                     new Phone
                     {
                         Id = 2,
-                        Name = "Sumsung M2",
+                        Name = "Samsung M2",
                         Price = "17 880",
                         Images = new List<string>()
                         {
@@ -75,7 +75,7 @@ namespace ReactApp1.Server.Repositories
                     new Phone
                     {
                         Id = 3,
-                        Name = "Sumsung M3",
+                        Name = "Samsung M3",
                         Price = "37 999",
                         Images = new List<string>()
                         {

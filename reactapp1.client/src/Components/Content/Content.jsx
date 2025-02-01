@@ -9,7 +9,7 @@ const Content = (props) => {
             {props.items.length !== 0
             ?   (
                     props.items.map((item) =>
-                        <ItemCard addToCart={props.addToCart} item={item} key={item.id } />
+                        <ItemCard addToCart={props.addToCart} item={item} key={item.id} />
                     )
                 )
             :

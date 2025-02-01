@@ -43,7 +43,7 @@ namespace ReactApp1.Server.Controllers
                 issuer: "MyAuthServer",
                 audience: "MyAuthClient",
                 claims: claims,
-                expires: DateTime.UtcNow.Add(TimeSpan.FromMinutes(2)),
+                expires: DateTime.UtcNow.Add(TimeSpan.FromDays(1)),
                 signingCredentials: new Microsoft.IdentityModel.Tokens.SigningCredentials(
                 new SymmetricSecurityKey(Encoding.UTF8.GetBytes("mysupersecret_secretsecretsecretkey!123")), SecurityAlgorithms.HmacSha256));
             
